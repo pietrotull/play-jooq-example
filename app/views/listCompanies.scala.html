@@ -11,11 +11,11 @@
 
 <table>
     <thead>
-    <tr><th>Name</th><th>Address</th>
+    <tr><th>Id</th><th>Name</th><th>Address</th>
     </thead>
     <tbody>
     @for(w <- companies) {
-    <tr><td>@w.name</td><td>@w.address</td></tr>
+    <tr><td>@w.id</td><td>@w.name</td><td>@w.address</td></tr>
     }
     </tbody>
 </table>

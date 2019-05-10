@@ -1,15 +1,27 @@
-@(comps: List[generated.tables.records.CompanyRecord])
+@(comps: Seq[models.Company], cust: Seq[models.Customer])
 
 @main("Welcome to Play-Jooq") {
   <h1>Welcome to Play and Jooq!</h1>
-
+  <h2>Companies</h2>
   <table>
     <tr><th>Id</th><th>Name</th><th>Address</th></tr>
     @for(com <- comps) {
     <tr>
-      <td>@com.getId</td>
-      <td>@com.getName</td>
-      <td>@com.getAddress</td>
+      <td>@com.id</td>
+      <td>@com.name</td>
+      <td>@com.address</td>
+    </tr>
+    }
+  </table>
+  <hr/>
+  <h2>Customers</h2>
+  <table>
+    <tr><th>Id</th><th>Name</th><th>Age</th><th>Address</th></tr>
+    @for(cus <- cust) {
+    <tr>
+      <td>@cus.id</td>
+      <td>@cus.name</td>
+      <td>@cus.address</td>
     </tr>
     }
   </table>

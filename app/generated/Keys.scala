@@ -9,8 +9,11 @@ import generated.tables.Customer
 import generated.tables.records.CompanyRecord
 import generated.tables.records.CustomerRecord
 
+import java.lang.Integer
+
 import javax.annotation.Generated
 
+import org.jooq.Identity
 import org.jooq.UniqueKey
 import org.jooq.impl.Internal
 
@@ -34,6 +37,8 @@ object Keys {
   // IDENTITY definitions
   // -------------------------------------------------------------------------
 
+  val IDENTITY_COMPANY = Identities0.IDENTITY_COMPANY
+  val IDENTITY_CUSTOMER = Identities0.IDENTITY_CUSTOMER
 
   // -------------------------------------------------------------------------
   // UNIQUE and PRIMARY KEY definitions
@@ -50,6 +55,11 @@ object Keys {
   // -------------------------------------------------------------------------
   // [#1459] distribute members to avoid static initialisers > 64kb
   // -------------------------------------------------------------------------
+
+  private object Identities0 {
+    val IDENTITY_COMPANY : Identity[CompanyRecord, Integer] = Internal.createIdentity(Company.COMPANY, Company.COMPANY.ID)
+    val IDENTITY_CUSTOMER : Identity[CustomerRecord, Integer] = Internal.createIdentity(Customer.CUSTOMER, Customer.CUSTOMER.ID)
+  }
 
   private object UniqueKeys0 {
     val COMPANY_PKEY : UniqueKey[CompanyRecord] = Internal.createUniqueKey(Company.COMPANY, "company_pkey", Company.COMPANY.ID)

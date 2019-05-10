@@ -20,6 +20,7 @@ import javax.annotation.Generated
 
 import org.jooq.Field
 import org.jooq.ForeignKey
+import org.jooq.Identity
 import org.jooq.Index
 import org.jooq.Name
 import org.jooq.Record
@@ -80,7 +81,7 @@ extends TableImpl[CustomerRecord](
   /**
    * The column <code>public.customer.id</code>.
    */
-  val ID : TableField[CustomerRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), "")
+  val ID : TableField[CustomerRecord, Integer] = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('customer_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), "")
 
   /**
    * The column <code>public.customer.name</code>.
@@ -135,6 +136,10 @@ extends TableImpl[CustomerRecord](
 
   override def getIndexes : List[ Index ] = {
     return Arrays.asList[ Index ](Indexes.CUSTOMER_PKEY)
+  }
+
+  override def getIdentity : Identity[CustomerRecord, Integer] = {
+    Keys.IDENTITY_CUSTOMER
   }
 
   override def getPrimaryKey : UniqueKey[CustomerRecord] = {

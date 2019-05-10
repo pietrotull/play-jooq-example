@@ -14,6 +14,7 @@ import java.util.List
 import javax.annotation.Generated
 
 import org.jooq.Catalog
+import org.jooq.Sequence
 import org.jooq.Table
 import org.jooq.impl.SchemaImpl
 
@@ -41,6 +42,18 @@ object Public {
 class Public extends SchemaImpl("public", DefaultCatalog.DEFAULT_CATALOG) {
 
   override def getCatalog : Catalog = DefaultCatalog.DEFAULT_CATALOG
+
+  override def getSequences : List[Sequence[_]] = {
+    val result = new ArrayList[Sequence[_]]
+    result.addAll(getSequences0)
+    result
+  }
+
+  private def getSequences0(): List[Sequence[_]] = {
+    return Arrays.asList[Sequence[_]](
+      Sequences.COMPANY_ID_SEQ,
+      Sequences.CUSTOMER_ID_SEQ)
+  }
 
   override def getTables : List[Table[_]] = {
     val result = new ArrayList[Table[_]]

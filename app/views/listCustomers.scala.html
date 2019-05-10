@@ -11,7 +11,7 @@
 
 <table>
     <thead>
-    <tr><th>Name</th><th>Age</th><tr><th>Address</th><th>Salary</th>
+    <tr><th>Name</th><th>Age</th><th>Address</th><th>Salary</th></tr>
     </thead>
     <tbody>
     @for(w <- customers) {
@@ -34,7 +34,6 @@
 @helper.form(postUrl) {
 @helper.CSRF.formField
 
-@helper.inputText(form("id"))
 @helper.inputText(form("name"))
 @helper.inputText(form("age"))
 @helper.inputText(form("address"))
