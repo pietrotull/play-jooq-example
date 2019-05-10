@@ -1,0 +1,16 @@
+@(comps: List[generated.tables.records.CompanyRecord])
+
+@main("Welcome to Play-Jooq") {
+  <h1>Welcome to Play and Jooq!</h1>
+
+  <table>
+    <tr><th>Id</th><th>Name</th><th>Address</th></tr>
+    @for(com <- comps) {
+    <tr>
+      <td>@com.getId</td>
+      <td>@com.getName</td>
+      <td>@com.getAddress</td>
+    </tr>
+    }
+  </table>
+}

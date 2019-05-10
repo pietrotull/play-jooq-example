@@ -1,0 +1,45 @@
+@(customers: Seq[Customer], form: Form[CustomerForm.Data], postUrl: Call)(implicit request: MessagesRequestHeader)
+
+@main("Customers") {
+
+<h1>Customers</h1>
+
+@* Flash shows updates to a page *@
+@request.flash.data.map{ case (name, value) =>
+<div>@name: @value</div>
+}
+
+<table>
+    <thead>
+    <tr><th>Name</th><th>Age</th><tr><th>Address</th><th>Salary</th>
+    </thead>
+    <tbody>
+    @for(w <- customers) {
+        <tr><td>@w.name</td><td>@w.age</td><td>@w.address</td><td>@w.salary</td></tr>
+    }
+    </tbody>
+</table>
+
+<hr/>
+
+@* Global errors are not tied to any particular form field *@
+@if(form.hasGlobalErrors) {
+@form.globalErrors.map { error: FormError =>
+<div>
+    @error.key: @error.message
+</div>
+}
+}
+
+@helper.form(postUrl) {
+@helper.CSRF.formField
+
+@helper.inputText(form("id"))
+@helper.inputText(form("name"))
+@helper.inputText(form("age"))
+@helper.inputText(form("address"))
+@helper.inputText(form("salary"))
+
+<button>Create Customer</button>
+}
+}
