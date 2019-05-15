@@ -1,4 +1,4 @@
-@(companies: Seq[Company], form: Form[CompanyForm.Data], postUrl: Call)(implicit request: MessagesRequestHeader)
+@(companies: Seq[Company], companyForm: Form[CompanyForm.Data], postUrl: Call)(implicit request: MessagesRequestHeader)
 
 @main("Companies") {
 
@@ -15,16 +15,32 @@
     </thead>
     <tbody>
     @for(w <- companies) {
-    <tr><td>@w.id</td><td>@w.name</td><td>@w.address</td></tr>
+    <tr><td>@w.id</td><td>@w.name</td><td>@w.address</td>
+        <td>@helper.form(routes.CompanyController.editCompany(w.id)) {
+            @helper.CSRF.formField
+            <input type="submit" value="Edit">
+            }
+        </td>
+        <td>@helper.form(routes.CompanyController.delCompany(w.id)) {
+                @helper.CSRF.formField
+                <input type="submit" value="Delete">
+            }
+        </td>
+    </tr>
     }
     </tbody>
 </table>
 
+<p>
+
+    @companyForm("name").value
+</p>
+
 <hr/>
 
 @* Global errors are not tied to any particular form field *@
-@if(form.hasGlobalErrors) {
-@form.globalErrors.map { error: FormError =>
+@if(companyForm.hasGlobalErrors) {
+@companyForm.globalErrors.map { error: FormError =>
 <div>
     @error.key: @error.message
 </div>
@@ -34,9 +50,9 @@
 @helper.form(postUrl) {
 @helper.CSRF.formField
 
-@helper.inputText(form("name"))
-
-@helper.inputText(form("address"))
+<input type="hidden" name="id" value='@companyForm("id").value' >
+@helper.inputText(companyForm("name"))
+@helper.inputText(companyForm("address"))
 
 <button>Create Company</button>
 }

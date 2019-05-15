@@ -15,7 +15,22 @@
     </thead>
     <tbody>
     @for(w <- customers) {
-        <tr><td>@w.name</td><td>@w.age</td><td>@w.address</td><td>@w.salary</td></tr>
+        <tr>
+            <td>@w.name</td>
+            <td>@w.age</td>
+            <td>@w.address</td>
+            <td>@w.salary</td>
+            <td>@helper.form(routes.CustomerController.editCustomer(w.id)) {
+                @helper.CSRF.formField
+                <input type="submit" value="Edit">
+                }
+            </td>
+            <td>@helper.form(routes.CustomerController.delCustomer(w.id)) {
+                    @helper.CSRF.formField
+                    <input type="submit" value="Delete">
+                }
+            </td>
+        </tr>
     }
     </tbody>
 </table>
@@ -39,6 +54,6 @@
 @helper.inputText(form("address"))
 @helper.inputText(form("salary"))
 
-<button>Create Customer</button>
+<button>Save Customer</button>
 }
 }

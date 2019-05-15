@@ -21,4 +21,9 @@ class CustomerService {
     r.store()
     new Customer(r)
   }
+
+  def getCustomerById(id: Int): Customer = {
+    val c = dbContext.fetchOne(CUSTOMER, CUSTOMER.ID.eq(id))
+    new Customer(c)
+  }
 }

@@ -2,20 +2,41 @@ package services
 
 import generated.Tables.COMPANY
 import org.jooq.DSLContext
-import collection.JavaConversions._
+
 import controllers.CompanyForm
 import models.Company
+import collection.JavaConversions._
+
+import generated.tables.records.CompanyRecord
 
 class CompanyService {
 	val dbContext: DSLContext = Driver.getDbContext()
 
+	def delCompany(id: Int) = {
+		val com = getById(id)
+		com.delete()
+	}
+
 	def storeCompany(data: CompanyForm.Data): Company = {
-		val r = dbContext.newRecord(COMPANY)
-		r.setName(data.name)
-		r.setAddress(data.address)
-		r.store()
-		new Company(r)
+		val comp = if (data.id.isDefined) {
+			val com = getById(data.id.get)
+			com.setName(data.name)
+			com.setAddress(data.address)
+			com.store()
+			com
+		} else {
+			val r = dbContext.newRecord(COMPANY)
+			r.setName(data.name)
+			r.setAddress(data.address)
+			r.store()
+			r
+		}
+		new Company(comp)
 	}
 
 	def getAllCompanies(): Seq[Company] = dbContext.fetch(COMPANY).map(new Company(_))
+
+	def getCompanyById(id: Int): Company = new Company(getById(id))
+
+	private def getById(id: Int): CompanyRecord = dbContext.fetchOne(COMPANY, COMPANY.ID.eq(id))
 }

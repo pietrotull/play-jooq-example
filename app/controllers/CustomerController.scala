@@ -44,4 +44,20 @@ class CustomerController @Inject()(cc: MessagesControllerComponents, customerSer
     val formValidationResult = form.bindFromRequest
     formValidationResult.fold(errorFunction, successFunction)
   }
+
+  def editCustomer(id: Int) = Action { implicit request: MessagesRequest[AnyContent] => {
+
+    }
+    println(s"edit cus: $id")
+    val c = customerService.getCustomerById(id)
+    // form.data("id" -> )
+    Ok(views.html.listCustomers(customers, form, postUrl))
+  }
+
+  def delCustomer(id: Int)  = Action { implicit request: MessagesRequest[AnyContent] => {
+
+    }
+    println(s"del cus: $id")
+    Redirect(routes.CustomerController.listCustomers())
+  }
 }
