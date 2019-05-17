@@ -21,8 +21,10 @@ object CompanyForm {
 	val form = Form(
 		mapping(
 			"id" -> optional(number),
-			"name" -> nonEmptyText,
-			"address" -> nonEmptyText
+			"name" -> nonEmptyText(maxLength = 25),
+			"address" -> nonEmptyText(maxLength = 25)
 		)(Data.apply)(Data.unapply)
 	)
 }
+
+// text: maps to scala.String, optionally takes minLength and maxLength.

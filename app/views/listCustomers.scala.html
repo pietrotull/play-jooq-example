@@ -49,6 +49,7 @@
 @helper.form(postUrl) {
 @helper.CSRF.formField
 
+<input type="hidden" name="id" value='@form("id").value' >
 @helper.inputText(form("name"))
 @helper.inputText(form("age"))
 @helper.inputText(form("address"))

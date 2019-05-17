@@ -2,13 +2,14 @@ package controllers
 
 import javax.inject.Inject
 import models.Customer
+import play.api.{Logger, Logging}
 import play.api.data._
 import play.api.mvc._
 import services.CustomerService
 
 
 class CustomerController @Inject()(cc: MessagesControllerComponents, customerService: CustomerService)
-  extends MessagesAbstractController(cc) {
+  extends MessagesAbstractController(cc) with Logging {
 
   import CustomerForm._
 
@@ -45,19 +46,16 @@ class CustomerController @Inject()(cc: MessagesControllerComponents, customerSer
     formValidationResult.fold(errorFunction, successFunction)
   }
 
-  def editCustomer(id: Int) = Action { implicit request: MessagesRequest[AnyContent] => {
-
-    }
-    println(s"edit cus: $id")
+  def editCustomer(id: Int) = Action { implicit request: MessagesRequest[AnyContent] => {}
+    logger.info(s"edit customer: $id")
     val c = customerService.getCustomerById(id)
-    // form.data("id" -> )
-    Ok(views.html.listCustomers(customers, form, postUrl))
+    val data = CustomerForm.Data(id = Some(c.id), name = c.name, age = c.age, address = c.address, salary = c.salary)
+    Ok(views.html.listCustomers(customers, form.fill(data), postUrl))
   }
 
-  def delCustomer(id: Int)  = Action { implicit request: MessagesRequest[AnyContent] => {
-
-    }
-    println(s"del cus: $id")
+  def delCustomer(id: Int)  = Action { implicit request: MessagesRequest[AnyContent] => {}
+    logger.info(s"delete customer: $id")
+    customerService.delCustomer(id)
     Redirect(routes.CustomerController.listCustomers())
   }
 }

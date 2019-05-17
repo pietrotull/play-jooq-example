@@ -1,13 +1,14 @@
 package controllers
 
 import javax.inject.Inject
-import models.{Company}
+import models.Company
+import play.api.{Logger, Logging}
 import play.api.data._
 import play.api.mvc._
 import services.CompanyService
 
 class CompanyController @Inject()(cc: MessagesControllerComponents, companyService: CompanyService)
-  extends MessagesAbstractController(cc) {
+  extends MessagesAbstractController(cc) with Logging {
 
   import CompanyForm._
 
@@ -43,7 +44,7 @@ class CompanyController @Inject()(cc: MessagesControllerComponents, companyServi
   }
 
   def delCompany(id: Int) = Action { implicit request: MessagesRequest[AnyContent] =>
-    println(s"delete com: $id")
+    logger.info(s"delete company with id: $id")
     companyService.delCompany(id)
     companies = companyService.getAllCompanies()
 
@@ -51,6 +52,7 @@ class CompanyController @Inject()(cc: MessagesControllerComponents, companyServi
   }
 
   def editCompany(id: Int) = Action { implicit request: MessagesRequest[AnyContent] => {}
+    logger.info(s"edit company with id: $id")
     val company = companyService.getCompanyById(id)
     val data = CompanyForm.Data(id = Some(company.id), name = company.name, address = company.address)
     Ok(views.html.listCompanies(companies, form.fill(data), postUrl))

@@ -11,7 +11,7 @@ object CustomerForm {
     * Using a class specifically for form binding reduces the chances
     * of a parameter tampering attack and makes code clearer.
     */
-  case class Data(name: String, age: Int, address: String, salary: BigDecimal)
+  case class Data(id: Option[Int], name: String, age: Int, address: String, salary: BigDecimal)
 
   /**
     * The form definition for the "create a widget" form.
@@ -20,9 +20,10 @@ object CustomerForm {
     */
   val form = Form(
     mapping(
-      "name" -> nonEmptyText,
+      "id" -> optional(number),
+      "name" -> nonEmptyText(maxLength = 25),
       "age" -> number,
-      "address" -> nonEmptyText,
+      "address" -> nonEmptyText(maxLength = 25),
       "salary" -> bigDecimal
     )(Data.apply)(Data.unapply)
   )
