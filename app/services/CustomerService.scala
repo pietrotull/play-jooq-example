@@ -10,9 +10,9 @@ import models.Customer
 
 class CustomerService {
 
-  val dbContext: DSLContext = Driver.getDbContext()
+  val dbContext: DSLContext = Driver.getDbContext
 
-  def getAllCustomers(): Seq[Customer] = dbContext.fetch(CUSTOMER).map(new Customer(_))
+  def getAllCustomers: Seq[Customer] = dbContext.fetch(CUSTOMER).map(new Customer(_))
 
   def storeCustomer(data: CustomerForm.Data): Customer = {
     val customer = if (data.id.isDefined) {

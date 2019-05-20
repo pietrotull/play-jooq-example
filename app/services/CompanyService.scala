@@ -10,9 +10,9 @@ import collection.JavaConversions._
 import generated.tables.records.CompanyRecord
 
 class CompanyService {
-	val dbContext: DSLContext = Driver.getDbContext()
+	val dbContext: DSLContext = Driver.getDbContext
 
-	def delCompany(id: Int) = {
+	def delCompany(id: Int): Int = {
 		val com = getById(id)
 		com.delete()
 	}
@@ -34,7 +34,7 @@ class CompanyService {
 		new Company(comp)
 	}
 
-	def getAllCompanies(): Seq[Company] = dbContext.fetch(COMPANY).map(new Company(_))
+	def getAllCompanies: Seq[Company] = dbContext.fetch(COMPANY).map(new Company(_))
 
 	def getCompanyById(id: Int): Company = new Company(getById(id))
 

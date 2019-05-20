@@ -1,8 +1,6 @@
 package controllers
 
-import generated.tables.records.CompanyRecord
 import javax.inject._
-import play.api._
 import play.api.mvc._
 import services.{CompanyService, CustomerService}
 
@@ -22,10 +20,9 @@ class HomeController @Inject()(cc: ControllerComponents,
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-  def index() = Action { implicit request: Request[AnyContent] =>
-    val comps = companyService.getAllCompanies()
-    val cust = customerService.getAllCustomers()
+  def index(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    val comps = companyService.getAllCompanies
+    val cust = customerService.getAllCustomers
     Ok(views.html.index(comps, cust))
   }
-
 }

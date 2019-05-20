@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.Inject
 import models.Company
-import play.api.{Logger, Logging}
+import play.api.Logging
 import play.api.data._
 import play.api.mvc._
 import services.CompanyService
@@ -19,13 +19,13 @@ class CompanyController @Inject()(cc: MessagesControllerComponents, companyServi
   // of the "WidgetController" references are inside the .scala file.
   private val postUrl = routes.CompanyController.createCompany()
 
-  def listCompanies = Action { implicit request: MessagesRequest[AnyContent] =>
-    companies = companyService.getAllCompanies()
+  def listCompanies: Action[AnyContent] = Action { implicit request: MessagesRequest[AnyContent] =>
+    companies = companyService.getAllCompanies
     Ok(views.html.listCompanies(companies, form, postUrl))
   }
 
   // This will be the action that handles our form post
-  def createCompany = Action { implicit request: MessagesRequest[AnyContent] =>
+  def createCompany: Action[AnyContent] = Action { implicit request: MessagesRequest[AnyContent] =>
     val errorFunction = { formWithErrors: Form[Data] =>
       // This is the bad case, where the form had validation errors.
       // Let's show the user the form again, with the errors highlighted.
@@ -43,15 +43,15 @@ class CompanyController @Inject()(cc: MessagesControllerComponents, companyServi
     formValidationResult.fold(errorFunction, successFunction)
   }
 
-  def delCompany(id: Int) = Action { implicit request: MessagesRequest[AnyContent] =>
+  def delCompany(id: Int): Action[AnyContent] = Action { implicit request: MessagesRequest[AnyContent] =>
     logger.info(s"delete company with id: $id")
     companyService.delCompany(id)
-    companies = companyService.getAllCompanies()
+    companies = companyService.getAllCompanies
 
     Redirect(routes.CompanyController.listCompanies())
   }
 
-  def editCompany(id: Int) = Action { implicit request: MessagesRequest[AnyContent] => {}
+  def editCompany(id: Int): Action[AnyContent] = Action { implicit request: MessagesRequest[AnyContent] => {}
     logger.info(s"edit company with id: $id")
     val company = companyService.getCompanyById(id)
     val data = CompanyForm.Data(id = Some(company.id), name = company.name, address = company.address)

@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.Inject
 import models.Customer
-import play.api.{Logger, Logging}
+import play.api.Logging
 import play.api.data._
 import play.api.mvc._
 import services.CustomerService
@@ -21,14 +21,14 @@ class CustomerController @Inject()(cc: MessagesControllerComponents, customerSer
   private val postUrl = routes.CustomerController.createCustomer()
 
 
-  def listCustomers = Action { implicit request: MessagesRequest[AnyContent] =>
+  def listCustomers: Action[AnyContent] = Action { implicit request: MessagesRequest[AnyContent] =>
     // Pass an unpopulated form to the template
-    customers = customerService.getAllCustomers()
+    customers = customerService.getAllCustomers
     Ok(views.html.listCustomers(customers, form, postUrl))
   }
 
   // This will be the action that handles our form post
-  def createCustomer = Action { implicit request: MessagesRequest[AnyContent] =>
+  def createCustomer: Action[AnyContent] = Action { implicit request: MessagesRequest[AnyContent] =>
     val errorFunction = { formWithErrors: Form[Data] =>
       // This is the bad case, where the form had validation errors.
       // Let's show the user the form again, with the errors highlighted.
@@ -46,14 +46,14 @@ class CustomerController @Inject()(cc: MessagesControllerComponents, customerSer
     formValidationResult.fold(errorFunction, successFunction)
   }
 
-  def editCustomer(id: Int) = Action { implicit request: MessagesRequest[AnyContent] => {}
+  def editCustomer(id: Int): Action[AnyContent] = Action { implicit request: MessagesRequest[AnyContent] => {}
     logger.info(s"edit customer: $id")
     val c = customerService.getCustomerById(id)
     val data = CustomerForm.Data(id = Some(c.id), name = c.name, age = c.age, address = c.address, salary = c.salary)
     Ok(views.html.listCustomers(customers, form.fill(data), postUrl))
   }
 
-  def delCustomer(id: Int)  = Action { implicit request: MessagesRequest[AnyContent] => {}
+  def delCustomer(id: Int): Action[AnyContent] = Action { implicit request: MessagesRequest[AnyContent] => {}
     logger.info(s"delete customer: $id")
     customerService.delCustomer(id)
     Redirect(routes.CustomerController.listCustomers())
