@@ -2,7 +2,7 @@ package services
 
 import generated.Tables.CUSTOMER
 import org.jooq.DSLContext
-import collection.JavaConversions._
+import collection.JavaConverters._
 
 import controllers.CustomerForm
 import generated.tables.records.CustomerRecord
@@ -12,7 +12,7 @@ class CustomerService {
 
   val dbContext: DSLContext = Driver.getDbContext
 
-  def getAllCustomers: Seq[Customer] = dbContext.fetch(CUSTOMER).map(new Customer(_))
+  def getAllCustomers: Seq[Customer] = dbContext.fetch(CUSTOMER).asScala.map(new Customer(_))
 
   def storeCustomer(data: CustomerForm.Data): Customer = {
     val customer = if (data.id.isDefined) {

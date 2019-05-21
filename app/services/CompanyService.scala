@@ -5,7 +5,7 @@ import org.jooq.DSLContext
 
 import controllers.CompanyForm
 import models.Company
-import collection.JavaConversions._
+import collection.JavaConverters._
 
 import generated.tables.records.CompanyRecord
 
@@ -34,7 +34,7 @@ class CompanyService {
 		new Company(comp)
 	}
 
-	def getAllCompanies: Seq[Company] = dbContext.fetch(COMPANY).map(new Company(_))
+	def getAllCompanies: Seq[Company] = dbContext.fetch(COMPANY).asScala.map(new Company(_))
 
 	def getCompanyById(id: Int): Company = new Company(getById(id))
 
