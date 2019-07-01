@@ -1,6 +1,7 @@
 package controllers
 
 import org.mockito.Mockito._
+import org.scalatest.BeforeAndAfter
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
@@ -14,15 +15,20 @@ import services.{CompanyService, CustomerService}
  *
  * For more information, see https://www.playframework.com/documentation/latest/ScalaTestingWithScalaTest
  */
-class HomeControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting with MockitoSugar {
+class HomeControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting with MockitoSugar with BeforeAndAfter {
+
+  val comMock: CompanyService = mock[CompanyService]
+  val cusMock: CustomerService = mock[CustomerService]
+
+  val controller = new HomeController(stubControllerComponents(), comMock, cusMock)
+
+  after {
+    reset(comMock, cusMock)
+  }
 
   "HomeController GET" should {
 
     "render the index page from a new instance of controller" in {
-
-      val comMock: CompanyService = mock[CompanyService]
-      val cusMock: CustomerService = mock[CustomerService]
-
       when(comMock.getAllCompanies).thenReturn(Seq())
       when(cusMock.getAllCustomers).thenReturn(Seq())
 
@@ -31,9 +37,8 @@ class HomeControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
 
       status(home) mustBe OK
       contentType(home) mustBe Some("text/html")
-      contentAsString(home) must include ("Welcome to Play")
+      contentAsString(home) must include ("Welcome to Play-Jooq")
     }
-
 
     "render the index page from the application" in {
       val controller = inject[HomeController]
@@ -41,18 +46,16 @@ class HomeControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting
 
       status(home) mustBe OK
       contentType(home) mustBe Some("text/html")
-      contentAsString(home) must include ("Welcome to Play")
+      contentAsString(home) must include ("Welcome to Play-Jooq")
     }
-    /*
+
     "render the index page from the router" in {
       val request = FakeRequest(GET, "/")
       val home = route(app, request).get
 
       status(home) mustBe OK
       contentType(home) mustBe Some("text/html")
-      contentAsString(home) must include ("Welcome to Play")
+      contentAsString(home) must include ("Welcome to Play-Jooq")
     }
-
-    */
   }
 }
